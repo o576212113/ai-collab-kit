@@ -16,6 +16,10 @@
 
 ## 接线
 
+> 💡 以下为**手动接线**方式(想精细掌控用这个)。零配置替代:kit 放进项目根后,各窗口一句首启句("你是开发员/审核员,按 ai-collab-kit/START.md 自举开工")即可全自动完成,见 START.md。
+
+<!-- 手动接线步骤 -->
+
 1. 项目根 `CLAUDE.md` 追加 [../adapters/claude-code.md](../adapters/claude-code.md) 片段,角色填 **Writer**
 2. 仓库根 `AGENTS.md` 追加 [../adapters/codex.md](../adapters/codex.md) 片段,角色填 **Reviewer**
 3. 两边各自 `install-hook`

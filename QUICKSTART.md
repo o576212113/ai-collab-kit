@@ -1,7 +1,8 @@
 # QUICKSTART — 15 分钟跑通第一个审稿循环
 
-> 前置:装了 git 和 Node.js(≥16);准备两个 AI 编程工具(不同厂商,如 Claude Code + Codex,或 Codex + Antigravity)。
-> 本文走最常用的**审稿环**。议事环和 lean 写码上手在文末。
+> ⚡ **先说最快路径(多数人用这个就够)**:把 kit 放进项目根 → 对第一个 AI 窗口说"你是开发员,按 ai-collab-kit/START.md 自举开工" → 空目录零请示全自动部署 → 其余窗口只说"你是审核员"四个字。详见 README"最快路径"。
+> 本文是**显式手动教程**——想理解每一步在做什么、或往已有复杂项目里装、或部署出问题要排查时,读这里。
+> 前置:装了 git 和 Node.js(≥16);准备两个 AI 编程工具(不同厂商,如 Claude Code + Codex,或 Codex + Antigravity)。本文走最常用的**审稿环**;议事环和 lean 写码上手在文末;空项目从需求到代码的完整流水线见进阶 C。
 
 ## 第 1 步:安装(2 分钟)
 
@@ -22,7 +23,9 @@ _collab/
   discussion/{state.json, topics/}
 ```
 
-## 第 2 步:填两份配置(5 分钟)
+## 第 2 步:填两份配置(可后补;建议现在花 5 分钟)
+
+> 赶时间可以先跳过本步直接开工:config 有默认值,硬升级清单有通用五类兜底;协作中 AI 会把发现的红线缺口记进 `_collab/escalation_candidates.md`,你随时跑 `collab.mjs proposals` 逐条采纳——清单越用越准。但**只要项目动真格,这两份迟早要填**。
 
 **`_collab/collab.config.json`**:改 `project_name`;把 `actors.writer.tool` / `actors.reviewer.tool` 改成你实际用的工具;`loops.lean_code.verify_commands` 填你项目的验证命令(如 `npm test`)。
 
@@ -116,6 +119,14 @@ node ai-collab-kit/scripts/collab.mjs decision --from decision.txt --status adop
 ```bash
 node ai-collab-kit/scripts/collab.mjs mode execution --lean
 ```
+
+## 进阶 C:空项目开局,走 pipeline 流水线
+
+拿到一个新点子不知从哪下手?一句话:
+
+> 你是开发员,按 ai-collab-kit/START.md 自举开工;然后我要做 <一句话需求>,按 ai-collab-kit/pipeline/PIPELINE.md 走流水线,先出需求书。
+
+四阶段(需求书→规划书→模块规约→lean 执行)、四个拍板点全归你,体量自适应(小工具三次拍板走完)。详见 [pipeline/PIPELINE.md](pipeline/PIPELINE.md)。
 
 ## 日常维护
 
