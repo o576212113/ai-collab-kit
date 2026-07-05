@@ -13,7 +13,14 @@
 0.【幂等检测】若项目里已同时存在 ai-collab-kit/ 目录和 _collab/ 目录(说明另一个 AI 已装过),
    跳过第 2、3 步,从第 4 步继续。
 
-1. 确认当前目录是项目 git 仓库根(git rev-parse --show-toplevel);不是就停下问我。
+1. 确认当前目录是项目 git 仓库根(git rev-parse --show-toplevel)。
+   若还不是 git 仓库:先问我是否就地初始化;我确认后依次做——
+   ① git init -b main(身份未配则补 git config user.name / user.email)
+   ② 起草一份合理的 .gitignore(排除依赖目录、构建产物、大体积媒体/数据文件、临时文件,
+      清单先列给我确认再写入)
+   ③ 现有项目文件做一次初始快照提交:git add -A && git commit -m "chore: 初始项目快照"
+      (不要与套件引入混在同一个 commit)
+   然后继续第 2 步。
 
 2. 引入套件:
    git clone https://github.com/o576212113/ai-collab-kit.git ai-collab-kit
@@ -55,7 +62,9 @@
    - 已装过、本次只改了你的指令文件:只 add 该文件,
      commit message 用:docs: 接入 ai-collab-kit 协作协议声明(不带 [skip-review])
    - 已装过且第 4 步也跳过了(无任何改动):本步跳过。
-   然后 git push。
+   然后 git push;若仓库尚未配置 remote,跳过 push(仅本地 commit),
+   并在最后报告里提醒我:两个 AI 共用同一目录时本地总线即可工作,
+   需要备份或跨机协作时再配远程仓库。
 
 7. 安装写权限机检 hook(每台机器的每个 clone 各装一次):
    node ai-collab-kit/scripts/collab.mjs install-hook
