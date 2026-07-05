@@ -10,7 +10,7 @@
    - **目录名核查**:套件目录若不叫 `ai-collab-kit`(ZIP 下载解压常见 `ai-collab-kit-main`)→ 直接重命名为 `ai-collab-kit` 并在报告中说明(协议内所有路径引用以此为准,重命名无风险不必请示)
    - **多窗口仲裁**:若 `_collab/` 不存在而 Owner 可能同时对多个窗口下发了首启句 → 部署只能由**一个**窗口执行。问 Owner"由我来完成部署吗?";Owner 未点名你 → 等总线就绪后再继续(那时你只需做第 3 步接入自己 + 第 6 步上岗)。
 
-1. **git 仓库**:若当前项目还不是 git 仓库,分两种情况:
+1. **git 仓库**:先查身份——`git config user.name` 为空(全新机器常见)→ 问 Owner 要姓名/邮箱(建议 `--global` 配一次终身受用;Owner 有 GitHub 账号则推荐 `<用户名>` + `<用户名>@users.noreply.github.com`)。然后,若当前项目还不是 git 仓库,分两种情况:
    - **空目录**(除套件目录外没有其他文件)→ **免请示直接做**:`git init -b main` + 把 `ai-collab-kit/templates/gitignore.default` 拷为项目根 `.gitignore`。空目录没有可破坏之物,这是唯一免请示的场景
    - **已有项目文件** → 必须先问 Owner 是否就地初始化;确认后 `git init -b main` + 起草 `.gitignore`(排除依赖/构建产物/大体积媒体与数据/临时文件,**清单先给 Owner 确认**)+ 现有文件快照 `git commit -m "chore: 初始项目快照"`。
 
