@@ -1,0 +1,14 @@
+{
+  "protocol_version": "collab-kit-1.0",
+  "topic_id": null,
+  "phase": "idle",
+  "round": 0,
+  "lite": false,
+  "synthesis_author": null,
+  "decision_authority": null,
+  "writer_seen_reviewer_round": 0,
+  "reviewer_seen_writer_round": 0,
+  "next_action": "wait_for_owner_topic",
+  "updated_by": null,
+  "updated_at": null
+}

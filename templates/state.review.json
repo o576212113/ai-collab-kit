@@ -1,0 +1,18 @@
+{
+  "protocol_version": "collab-kit-1.0",
+  "unit_id": null,
+  "round": 0,
+  "attempt": 1,
+  "review_target_commit": null,
+  "review_target_type": "business",
+  "last_reviewed_commit": null,
+  "review_status": null,
+  "review_timestamp": null,
+  "next_action": "idle",
+  "deadlock": {
+    "unit_rejections": 0,
+    "gate_counters": {},
+    "blocked": false
+  },
+  "note": ""
+}

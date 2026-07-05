@@ -1,0 +1,60 @@
+{
+  "$comment": "AI Collab Kit 项目配置模板。collab.mjs init 会把本文件拷到目标项目 _collab/collab.config.json,请按项目实际修改。字段语义见 PROTOCOL.md。",
+  "kit_version": "1.0.0",
+  "project_name": "<项目名>",
+  "language": "zh-CN",
+  "bus_dir": "_collab",
+  "actors": {
+    "owner": {
+      "name": "<Owner 名字>"
+    },
+    "writer": {
+      "tool": "claude-code",
+      "label": "Writer 窗口(写代码/文档/议事观点)"
+    },
+    "reviewer": {
+      "tool": "codex",
+      "label": "Reviewer 窗口(对抗审查/议事观点)"
+    },
+    "orchestrator": {
+      "mode": "script",
+      "$comment": "script = 用 collab.mjs 当中控(推荐);llm = 专开一个 AI 窗口按 roles/orchestrator.md 当中控"
+    }
+  },
+  "loops": {
+    "review": {
+      "enabled": true,
+      "deadlock_per_gate": 2,
+      "deadlock_per_unit": 3
+    },
+    "discussion": {
+      "enabled": true,
+      "max_rounds": 2
+    },
+    "lean_code": {
+      "enabled": true,
+      "require_ci_green": false,
+      "verify_commands": [
+        "<按项目填,例如:npm run typecheck>",
+        "<npm run lint>",
+        "<npm test>"
+      ],
+      "adversarial_self_check_on_large_units": true,
+      "dev_log_dir": "docs/dev_log"
+    }
+  },
+  "commit_prefixes": {
+    "business": ["feat", "fix", "docs", "test", "refactor", "perf", "chore(app)"],
+    "writer_opinion": "writer(opinion)",
+    "reviewer_opinion": "reviewer(opinion)",
+    "reviewer_review": "reviewer(review)",
+    "discuss": "discuss",
+    "collab_maintenance": "chore(collab)",
+    "skip_review_tag": "[skip-review]"
+  },
+  "guards": {
+    "state_file_size_warn_bytes": 32768,
+    "mode_note_max_chars": 500,
+    "enforce_commit_permission_matrix": true
+  }
+}
