@@ -22,7 +22,7 @@
 
 5. **模式**:Owner 指派角色时**已布置了具体任务** → 开工授权成立(PROTOCOL §四),执行 `node ai-collab-kit/scripts/collab.mjs mode execution --lean` 并在回复中报告;只指派了身份没派活 → 不切,待命。
 
-6. **上岗**:读 `ai-collab-kit/PROTOCOL.md` + `ai-collab-kit/roles/` 下你的角色卡,用 5 行以内向 Owner 复述你的角色红线,报告部署结果(做了哪几步、跳过哪几步),然后开始干活。同时提醒 Owner 一句:`_collab/` 两份配置可后补——协作中你会把发现的红线缺口记进 `_collab/escalation_candidates.md`,Owner 跑 `proposals` 命令逐条采纳即可。
+6. **上岗**:读 `ai-collab-kit/PROTOCOL.md` + `ai-collab-kit/roles/` 下你的角色卡,用 5 行以内向 Owner 复述你的角色红线,报告部署结果(做了哪几步、跳过哪几步),然后开始干活。**若这是全新空项目**,建议 Owner 一句:开工可走 `ai-collab-kit/pipeline/PIPELINE.md` 四阶段流水线(一句话需求 → 需求书 → 规划书 → 模块规约 → 增量执行,体量自适应)。同时提醒 Owner 一句:`_collab/` 两份配置可后补——协作中你会把发现的红线缺口记进 `_collab/escalation_candidates.md`,Owner 跑 `proposals` 命令逐条采纳即可。
 
 ## 已部署项目的日常握手
 

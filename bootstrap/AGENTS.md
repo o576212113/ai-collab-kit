@@ -24,7 +24,7 @@
 
 - 每次开工:`git fetch` + `git log origin/<主分支> --oneline -5`(无 remote 则本地 log)+ `git status` 三连 → 漏 push 三查(untracked / modified / `git log @{u}..`,只补救自己角色的文件)→ 按 mode 分发
 - lean 模式下审核员不按 mode 拒审,以 `_collab/review/state.json` 的 `next_action=wait_for_reviewer_*` 为审稿依据
-- 不写对方角色的文件;不写 `mode.json` / `discussion/state.json`(中控除外);`review_status` 只归审核员且只有三值
+- 不写对方角色的文件;不写 `mode.json` / `discussion/state.json`(中控除外)/ `locked_decisions.md`(决策账本,仅 `collab.mjs decide` 或 `discuss(decision):` 前缀机械誊录 Owner 拍板);`review_status` 只归审核员且只有三值
 - 命中 `_collab/escalation_rules.md` 任一条 → 立即停下等 Owner,双 AI 意见一致也不例外;**拿不准算不算命中 → 按命中处理(先停)**
 - 发现清单未覆盖的项目红线(本该停下问 Owner 却无规则可依)→ 往 `_collab/escalation_candidates.md` **追加一行候选**(格式见该文件),由 Owner 拍板后才进正式清单;**不得直接改 escalation_rules.md**
 - 规则以文件为准,与你的会话记忆冲突时信文件;Owner 建立的定时任务未经明示不得增删停

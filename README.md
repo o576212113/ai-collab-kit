@@ -63,7 +63,8 @@ ai-collab-kit/
   roles/               ← 三张角色卡(开发员 writer / 审核员 reviewer / 中控 orchestrator)
   adapters/            ← 各工具接入片段(claude-code / codex / antigravity / github / generic)
   templates/           ← 文件总线模板(state / last_writer / synthesis / spec / dev-log …)
-  scripts/collab.mjs   ← 中控脚本(init/status/mode/topic/advance/next/decision/check/archive/install-hook)
+  pipeline/            ← 从一句话需求到代码的四阶段流水线(体量自适应;含需求书/规划书模板)
+  scripts/collab.mjs   ← 中控脚本(init/status/mode/topic/advance/next/decision/decide/proposals/check/archive/install-hook)
   examples/            ← 配对示例(Claude+Codex / Codex+Antigravity)
 ```
 
@@ -106,7 +107,15 @@ node ai-collab-kit/scripts/collab.mjs install-hook
 
 然后开两个 AI 窗口,各自第一句指派角色("你是开发员,读角色卡开工"/"你是审核员……"),开始干活。完整走查见 [QUICKSTART.md](QUICKSTART.md)。
 
-## 六、三环什么时候用哪个
+## 六、空项目开局:走流水线
+
+拿到一个新点子,不知道从哪开始?对开发员说:
+
+> 你是开发员,按 ai-collab-kit/START.md 自举开工(已部署过则直接接活);然后我要做 <一句话需求>,按 ai-collab-kit/pipeline/PIPELINE.md 走流水线,先出需求书。
+
+四阶段:需求书(含 Owner 决策问题清单)→ 规划书(轻型项目自动跳过)→ 模块规约 → lean 增量执行。**体量自适应**——流水线在第一个门禁给项目"称重"定档,小工具三次拍板走完,重型项目才展开实体锁定与风险探针。每次拍板进决策账本(`_collab/locked_decisions.md`),此后任何文档与代码违背账本 = 自动停下找你。详见 [pipeline/PIPELINE.md](pipeline/PIPELINE.md)。
+
+## 七、三环什么时候用哪个
 
 | 场景 | 用哪个环 | 你的参与度 |
 |---|---|---|
@@ -114,7 +123,7 @@ node ai-collab-kit/scripts/collab.mjs install-hook
 | 拿不定主意,想听两个独立观点 | **议事环** | 出题 + 看 5 行摘要拍板 |
 | 进入密集写码期,想少被打扰 | **lean 写码** | 只在 4 类硬停点出现 |
 
-## 七、常见问题
+## 八、常见问题
 
 **Q:只有一个 AI 工具能用吗?**
 能跑,但价值减半:自审的盲点仍是盲点。协议的红利来自跨厂商对抗。哪怕 Reviewer 用免费档位的另一家模型,也强于同一模型自审。
@@ -131,7 +140,7 @@ node ai-collab-kit/scripts/collab.mjs install-hook
 **Q:能加第三个 AI 吗?**
 当前版本是 1 Writer + 1 Reviewer + 脚本中控。多 Reviewer(评审团)是自然扩展方向,协议骨架(状态属权/硬升级/机械信号)不变,欢迎在此基础上演化。
 
-## 八、设计哲学(给想改协议的人)
+## 九、设计哲学(给想改协议的人)
 
 1. **每条规则必须对应一个真实失效模式**——写不出"防什么"的规则不要加
 2. **能机检的不靠纪律**:同类问题第二次出现就脚本化;新守卫必须先证明能拦住(prove-catch)
@@ -139,6 +148,6 @@ node ai-collab-kit/scripts/collab.mjs install-hook
 4. **Owner 注意力是最稀缺资源**:一切设计向"更少但更关键的打扰"收敛
 5. **改协议本身也要走协议**:双 AI 审文本(Phase A)+ Owner 拍板落地(Phase B)
 
-## 九、许可与致谢
+## 十、许可与致谢
 
 自由使用、修改、分发(建议保留来源说明)。蒸馏自 OPC 项目的三窗口 Git-Bus 协议实战(2026),感谢每一轮被打回的 attempt——它们变成了这里的铁律。

@@ -10,6 +10,8 @@
  *   node collab.mjs advance [--commit]       议事环:检查产物齐否并推进 phase(机械收敛判定)
  *   node collab.mjs next                     输出可粘贴的下一步指令(该贴给哪个窗口)
  *   node collab.mjs decision --from f        Owner 拍板机械誊录 owner_decision.md + 议题收口
+ *   node collab.mjs decide "<决策>"          决策账本入账(机械誊录 Owner 拍板,D-NNN 自动编号)
+ *   node collab.mjs proposals                列出实战沉淀的硬升级候选(Owner 逐条采纳/驳回)
  *   node collab.mjs check [--commit-msg f]   健康检查 / commit 写权限机检(hook 用)
  *   node collab.mjs archive                  归档 review/state.json 中的非活跃字段
  *   node collab.mjs install-hook             安装 commit-msg 机检 hook
@@ -77,6 +79,7 @@ function cmdInit() {
     [path.join('review', 'last_reviewer.md'), path.join(T, 'last_reviewer.md')],
     [path.join('discussion', 'state.json'), path.join(T, 'state.discussion.json')],
     ['escalation_candidates.md', path.join(T, 'escalation_candidates.md')],
+    ['locked_decisions.md', path.join(T, 'locked_decisions.md')],
   ];
   fs.mkdirSync(path.join(bus, 'review', 'archive'), { recursive: true });
   fs.mkdirSync(path.join(bus, 'discussion', 'topics'), { recursive: true });
@@ -426,6 +429,7 @@ function classifyBusFile(rel, busName) {
   if (!p.startsWith(busName + '/')) return 'business';
   const r = p.slice(busName.length + 1);
   if (r === 'escalation_rules.md' || r === 'collab.config.json') return 'owner_config';
+  if (r === 'locked_decisions.md') return 'decision_ledger';
   if (r === 'review/last_reviewer.md') return 'reviewer_only';
   if (r === 'review/last_writer.md') return 'writer_only';
   if (r === 'review/state.json') return 'review_state';
@@ -445,7 +449,9 @@ const ACTOR_ALLOWED = {
   business: ['business', 'writer_only', 'review_state', 'collab_misc'],
   orchestrator: ['orchestrator_only', 'collab_misc'],
   collab_maintenance: ['reviewer_only', 'writer_only', 'review_state', 'orchestrator_only', 'synthesis', 'collab_misc'],
-  owner_config_actor: ['owner_config', 'collab_misc'],
+  owner_config_actor: ['owner_config', 'decision_ledger', 'collab_misc'],
+  // 决策账本单列类:只有 discuss(decision) 誊录与 owner(config) 可碰——防 chore(collab) 等日常前缀绕改防共谋之锚
+  decision_transcriber: ['decision_ledger', 'orchestrator_only', 'collab_misc'],
 };
 
 function actorFromMessage(firstLine, config) {
@@ -457,6 +463,7 @@ function actorFromMessage(firstLine, config) {
   if (firstLine.startsWith(px.reviewer_opinion || 'reviewer(opinion)')) return { actor: 'reviewer', needSkipTag: true };
   if (firstLine.startsWith(px.writer_opinion || 'writer(opinion)')) return { actor: 'writer_opinion', needSkipTag: true };
   if (firstLine.startsWith((px.discuss || 'discuss') + '(synthesis')) return { actor: 'synthesis_actor', needSkipTag: true };
+  if (firstLine.startsWith((px.discuss || 'discuss') + '(decision')) return { actor: 'decision_transcriber', needSkipTag: true };
   if (firstLine.startsWith((px.discuss || 'discuss') + '(')) return { actor: 'orchestrator', needSkipTag: true };
   if (firstLine.startsWith(px.collab_maintenance || 'chore(collab)')) return { actor: 'collab_maintenance', needSkipTag: true };
   for (const b of biz) if (firstLine.startsWith(b)) return { actor: 'business', needSkipTag: false };
@@ -633,8 +640,31 @@ function cmdDecision() {
   writeJSON(mP, mode);
 
   ok(`owner_decision.md 已誊录(status=${status}),议题 ${id} 收口,mode → idle`);
+  info('若此前在 lean 流水线中(议事只是 detour):被派活方按开工授权例外恢复 —— node collab.mjs mode execution --lean');
   info(`  - ${norm(path.relative(root, path.join(tDir, 'owner_decision.md')))}(请核对 Owner 原文;adopted_with_changes 请人工补"Owner 修改项"段)`);
   info(`  建议 commit:discuss(decision): ${id} Owner 拍板 [skip-review]`);
+}
+
+// ---------- decide(决策账本机械誊录:Owner 拍板一条入账一条) ----------
+function cmdDecide() {
+  const text = args[1];
+  if (!text || text.startsWith('--')) die('用法:decide "<决策一句话(Owner 原话)>" [--why "<理由>"] [--source "<门禁①/议事T-001/裁断>"]\n(机械誊录铁律:内容须出自 Owner 拍板,AI 不得代拟决策)');
+  const { bus } = loadCtx();
+  const p = path.join(bus, 'locked_decisions.md');
+  if (!fs.existsSync(p)) die('未找到 _collab/locked_decisions.md(旧版 init 未建,可从 kit templates/ 拷一份)');
+  let t = fs.readFileSync(p, 'utf8');
+  let maxN = 0;
+  for (const m of t.matchAll(/\| D-(\d+) /g)) maxN = Math.max(maxN, parseInt(m[1], 10));
+  const id = `D-${String(maxN + 1).padStart(3, '0')}`;
+  const opt = (k) => { const i = args.indexOf(k); return i > -1 && args[i + 1] ? args[i + 1] : '—'; };
+  const cell = (s) => String(s).replace(/\|/g, '/').replace(/\r?\n/g, ' ');
+  const date = new Date().toISOString().slice(0, 10);
+  t = t.trimEnd() + `\n| ${id} | ${date} | ${cell(text)} | ${cell(opt('--why'))} | ${cell(opt('--source'))} | 生效 |\n`;
+  fs.writeFileSync(p, t, 'utf8');
+  ok(`${id} 已入账:${text}`);
+  info(`建议 commit:discuss(decision): ${id} 入账 [skip-review]`);
+  info('提醒:推翻旧决策时不删旧条——新增一条,旧条"状态"改为"已废弃(被新 D-NNN 取代)";');
+  info('该手工修改同样用前缀 discuss(decision): ... [skip-review](或 Owner 的 owner(config): 前缀)提交,其他前缀会被机检拦。');
 }
 
 // ---------- proposals(实战沉淀:列出硬升级候选,Owner 一句话逐条采纳) ----------
@@ -675,7 +705,7 @@ node "${scriptRel}" check --commit-msg "$1" || exit 1
 }
 
 // ---------- 入口 ----------
-const commands = { init: cmdInit, status: cmdStatus, mode: cmdMode, topic: cmdTopic, advance: cmdAdvance, next: cmdNext, decision: cmdDecision, proposals: cmdProposals, check: cmdCheck, archive: cmdArchive, 'install-hook': cmdInstallHook };
+const commands = { init: cmdInit, status: cmdStatus, mode: cmdMode, topic: cmdTopic, advance: cmdAdvance, next: cmdNext, decision: cmdDecision, decide: cmdDecide, proposals: cmdProposals, check: cmdCheck, archive: cmdArchive, 'install-hook': cmdInstallHook };
 if (!cmd || !commands[cmd]) {
   console.log(`ai-collab-kit 中控脚本
 用法:node collab.mjs <命令>
@@ -686,6 +716,7 @@ if (!cmd || !commands[cmd]) {
   advance         议事环推进(检查产物齐否 + 机械收敛判定)[--commit]
   next            输出下一步该贴给哪个窗口的指令(Owner 纯复制转达)
   decision        Owner 拍板机械誊录 + 议题收口 --from <原文文件> [--status ...]
+  decide          决策账本入账 "<决策>" [--why] [--source](机械誊录 Owner 拍板)
   proposals       列出实战沉淀的硬升级候选(Owner 逐条采纳/驳回)
   check           健康检查 [--commit-msg <文件>](hook 用)
   archive         归档 review/state.json 非活跃字段

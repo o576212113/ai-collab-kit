@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.2.0(2026-07-05)pipeline 流水线(空项目开局导航,OPC 全链路蒸馏)
+
+- **四阶段流水线**:一句话需求 → 需求书(含★Owner 决策问题清单)→ 规划书 → 模块规约 → lean 增量执行;四门禁全部 Owner 拍板
+- **体量自适应三档**(轻/标准/重):门禁①定档;轻型跳过规划书、重型展开实体/状态机锁定 + 风险探针先行——搬 OPC 机制不搬吨位
+- **决策账本** `_collab/locked_decisions.md`(OPC"已锁口径 + Owner 拍板追踪"机制的通用化):`collab.mjs decide` 机械誊录,每门禁/议事/裁断入账;硬升级第 1 类以账本为判定依据;废弃不删只标注
+- 模板:pipeline/templates/{requirements,plan}.md;init 自动创建账本;账本文件归中控誊录类(discuss(decision) 前缀)
+
+
 ## 1.1.0(2026-07-05)议事环四包优化(Owner 拍板全采纳)
 
 - **效率包**:`topic --lite` 轻量档(只走 R1 盲发,起草方直接 synthesis + 对方三问复核,AI 动作 7→4)+ `next` 命令(输出可整句粘贴的下一步指令与目标窗口,Owner 从消息泵降级为复读机)

@@ -96,6 +96,7 @@ idle        空闲
 | `discussion/topics/*/owner_decision.md` | ❌ | ❌ | ✅(仅 Owner 口述决策时,机械誊录) | ✅ |
 | `mode.json` | ❌ | ❌ | ✅ 唯一 | — |
 | `collab.config.json` / `escalation_rules.md` | ❌ | ❌ | ❌ | ✅ 唯一(前缀 `owner(config):`) |
+| `locked_decisions.md`(决策账本) | ❌ | ❌ | ✅(仅机械誊录 Owner 拍板,`collab.mjs decide` / 前缀 `discuss(decision)`) | ✅ |
 
 **机检**:`collab.mjs check --commit-msg` 作为 git commit-msg hook,校验 commit 前缀 ↔ 触碰路径守恒(见 §九),把矩阵从纪律变成机器。机检是文件级的;`review/state.json` 内的 `review_status` / `last_reviewed_commit` 另有字段级探测(非 Reviewer 前缀改动这两个字段会被拦),其余字段级属权靠纪律 + git log 审计。
 
