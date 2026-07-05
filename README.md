@@ -82,9 +82,9 @@ ai-collab-kit/
 
 **最快路径(拷一次 + 每窗口一句话)**:
 1. 把 ai-collab-kit/ 整个目录放进项目根(ZIP 下载解压出的 `ai-collab-kit-main` 记得重命名为 `ai-collab-kit`)
-2. 对每个 AI 窗口说**首启句**:"你是开发员(/审核员/中控),按 ai-collab-kit/START.md 自举开工,然后帮我做 XX"
-   ——AI 会按自己的情况完成全部部署([START.md](START.md):git init 会请示你、初始化总线、装机检、**把协议接进它自己的指令文件**)
-3. 首启完成后,以后每次会话只需四个字:"你是开发员"
+2. 对**第一个** AI 窗口说首启句:"你是开发员,按 ai-collab-kit/START.md 自举开工,然后帮我做 XX"
+   ——**空目录零请示全自动**([START.md](START.md):git init、默认 .gitignore、总线、机检、把协议写进项目根 AGENTS.md + CLAUDE.md 双文件);已有文件的老项目只多一次 .gitignore 确认
+3. 等它报告完成后,**其余窗口以及以后的所有会话,只需四个字**:"你是审核员" / "你是开发员"
 
 (不放心让 AI 自己接线的,也可手工把 [bootstrap/](bootstrap/) 下两个文件拷到项目根——效果等价)
 

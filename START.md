@@ -7,14 +7,16 @@
 
 0. **认识你自己 + 环境**:
    - 确认 ①你是哪个 AI 工具;②你每次会话**自动读取**的项目级指令文件是哪个(Codex → `AGENTS.md`;Claude Code → `CLAUDE.md`;Antigravity/其他 → 你自己的规则文件——你比任何人清楚)
-   - **目录名核查**:套件目录若不叫 `ai-collab-kit`(ZIP 下载解压常见 `ai-collab-kit-main`)→ 请示 Owner 后重命名为 `ai-collab-kit`(协议内所有路径引用以此为准)
+   - **目录名核查**:套件目录若不叫 `ai-collab-kit`(ZIP 下载解压常见 `ai-collab-kit-main`)→ 直接重命名为 `ai-collab-kit` 并在报告中说明(协议内所有路径引用以此为准,重命名无风险不必请示)
    - **多窗口仲裁**:若 `_collab/` 不存在而 Owner 可能同时对多个窗口下发了首启句 → 部署只能由**一个**窗口执行。问 Owner"由我来完成部署吗?";Owner 未点名你 → 等总线就绪后再继续(那时你只需做第 3 步接入自己 + 第 6 步上岗)。
 
-1. **git 仓库**:若当前项目还不是 git 仓库 → 先问 Owner 是否就地初始化;确认后 `git init -b main` + 起草 `.gitignore`(排除依赖/构建产物/大体积媒体与数据/临时文件,清单先给 Owner 确认)+ 现有文件快照 `git commit -m "chore: 初始项目快照"`。
+1. **git 仓库**:若当前项目还不是 git 仓库,分两种情况:
+   - **空目录**(除套件目录外没有其他文件)→ **免请示直接做**:`git init -b main` + 把 `ai-collab-kit/templates/gitignore.default` 拷为项目根 `.gitignore`。空目录没有可破坏之物,这是唯一免请示的场景
+   - **已有项目文件** → 必须先问 Owner 是否就地初始化;确认后 `git init -b main` + 起草 `.gitignore`(排除依赖/构建产物/大体积媒体与数据/临时文件,**清单先给 Owner 确认**)+ 现有文件快照 `git commit -m "chore: 初始项目快照"`。
 
 2. **总线**:若 `_collab/` 不存在 → `node ai-collab-kit/scripts/collab.mjs init`
 
-3. **接入你自己**(这一步让 Owner 以后只需说"你是开发员"四个字):若你的指令文件里还没有"项目 AI 协作规则(ai-collab-kit)"内容 → 把 `ai-collab-kit/bootstrap/AGENTS.md` 的**全部内容追加**到你自己那个指令文件的末尾(文件不存在就创建;**已有内容绝不覆盖,只追加**)。
+3. **接入所有常见工具**(这一步让 Owner 对后续任何窗口都只需说"你是开发员"四个字):把 `ai-collab-kit/bootstrap/AGENTS.md` 的内容写到项目根的 `AGENTS.md` **和** `CLAUDE.md` **两个文件**(缺哪个建哪个;已存在但无协议段则**追加到末尾,绝不覆盖**;已有协议段则跳过)。这两个文件名覆盖了绝大多数 AI 工具的自动读取;若**你自己**读的是别的规则文件,把同样内容也追加到那里。
 
 4. **提交 + 机检**(顺序不可反):先提交——`git add -A && git commit -m "chore(collab): 引入 ai-collab-kit 协作协议 [skip-review]"`(有 remote 才 push,没有则仅本地);**提交之后**再装 hook——`node ai-collab-kit/scripts/collab.mjs install-hook`(先装 hook 会拦住 bootstrap 的混类提交,那是机检在正确工作)。
 
