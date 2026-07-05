@@ -43,6 +43,8 @@ _collab/
 
 **强烈推荐**:每个 clone 跑一次 `node ai-collab-kit/scripts/collab.mjs install-hook`,启用 commit 写权限机检(AI 越权写对方文件时 commit 直接失败)。
 
+> ⚠️ **顺序铁则:先完成 bootstrap commit,再装 hook。** 首次引入的全部文件(套件目录 + `_collab/` 初始文件 + 指令文件)先用 `chore(collab): 引入 ai-collab-kit [skip-review]` 一次性 commit——hook 装上之后,这批文件横跨多个属权类别,任何单一前缀都提交不全(这是机检在正确工作,不是 bug)。装完 hook 后,改 `_collab/collab.config.json` / `_collab/escalation_rules.md` 只能用 `owner(config): ... [skip-review]` 前缀(Owner 专用)。
+
 ## 第 4 步:跑第一个审稿循环(5 分钟)
 
 **⓪ 先切模式**(init 后默认 idle,守协议的 AI 在 idle 下不干活):
