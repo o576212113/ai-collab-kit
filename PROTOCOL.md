@@ -75,6 +75,7 @@ idle        空闲
 ```
 
 - 切模式 = Orchestrator 职责(脚本 `collab.mjs mode <x>` 或 LLM 中控),且**只在 Owner 明确指令下切**
+- **开工授权例外**:`mode=idle` 而 Owner 已口头指派角色**并布置了具体任务** → 视为 Owner 开工授权,被派活的角色可代跑 `collab.mjs mode execution --lean` 并在回复中报告;除此之外任何角色不得代切
 - lean 写码模式下 `lean: true`:mode 只是粗粒度标记,Reviewer **按 READY 目标审,不按 mode 拒审**(详见 `loops/lean-code-mode.md`;这条来自一次 mode 路由错误导致 Reviewer 拒审、阻塞 40 分钟的教训)
 
 ---

@@ -50,6 +50,7 @@
 10. **锚点核实**:finding 引用 `路径:行号` 前亲读确认那一行是实现,不是"提到符号名的注释"
 11. **死锁自记**(lean 期尤其):每轮记 attempt/gate 计数;同 gate 连续 2 或单元累计 3 → 顶部 `DEADLOCK-BLOCKED(escalate_owner)`,不静默继续(铁律 #13)
 12. **不动 Owner 的自动化**:Owner 创建的定时任务/轮询,除非 Owner 明确说停,你不删不停不改
+13. **红线缺口沉淀**:发现 escalation_rules.md 未覆盖的项目红线(审稿中最容易看见)→ 追加候选到 `_collab/escalation_candidates.md`,不得直接改清单本身
 
 ## 写权限与 commit
 

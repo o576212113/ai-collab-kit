@@ -80,7 +80,14 @@ ai-collab-kit/
 
 ## 五、快速开始
 
-**最省事的方式(推荐)**:把 [INSTALL_PROMPT.md](INSTALL_PROMPT.md) 里的通用安装提示词**原样**整段粘贴给你的 AI 工具(任何一家都行,一个字不用改)——它会自己装完底座。角色不在安装时确定,之后每次会话第一句由你口头指派("你是开发员/审核员");第一个 AI 装全套,第二个 AI 粘同一段会自动只补缺的部分。
+**最快路径(新项目,拷两下 + 一句话)**:
+1. 把 ai-collab-kit/ 整个目录放进项目根
+2. 把 [bootstrap/](bootstrap/) 下的 AGENTS.md 和 CLAUDE.md 拷到项目根(已有同名文件则把内容**追加**进去,别覆盖)
+3. 对每个 AI 窗口说一句"你是开发员 / 你是审核员"——第一个被指派并派活的 AI 会**自举完成其余一切**(init 总线、bootstrap commit、装 hook、进 lean 模式;git init 会先请示你)
+
+配置两件套(config + 硬升级清单)可后补:清单从默认五类起步,协作中 AI 把发现的红线缺口记为候选(escalation_candidates 机制),你跑 `collab.mjs proposals` 一句话逐条采纳——越用越准。
+
+**已有指令文件的老项目 / 想显式控制安装过程**:把 [INSTALL_PROMPT.md](INSTALL_PROMPT.md) 的通用安装提示词整段粘贴给任何 AI 工具(一个字不用改)。
 
 手动安装:
 

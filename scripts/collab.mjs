@@ -76,6 +76,7 @@ function cmdInit() {
     [path.join('review', 'last_writer.md'), path.join(T, 'last_writer.md')],
     [path.join('review', 'last_reviewer.md'), path.join(T, 'last_reviewer.md')],
     [path.join('discussion', 'state.json'), path.join(T, 'state.discussion.json')],
+    ['escalation_candidates.md', path.join(T, 'escalation_candidates.md')],
   ];
   fs.mkdirSync(path.join(bus, 'review', 'archive'), { recursive: true });
   fs.mkdirSync(path.join(bus, 'discussion', 'topics'), { recursive: true });
@@ -439,7 +440,7 @@ function classifyBusFile(rel, busName) {
 const ACTOR_ALLOWED = {
   // actor → 允许触碰的类别。owner_config(escalation_rules.md / collab.config.json)不在任何 AI actor 清单里:
   // 只有 owner(config): 前缀可碰——AI 严禁使用该前缀,它的存在使 Owner 改配置可提交、AI 篡改必被拦或在 git log 里显形。
-  reviewer: ['reviewer_only', 'review_state', 'synthesis'],
+  reviewer: ['reviewer_only', 'review_state', 'synthesis', 'collab_misc'],
   writer_opinion: ['writer_only', 'synthesis'],
   business: ['business', 'writer_only', 'review_state', 'collab_misc'],
   orchestrator: ['orchestrator_only', 'collab_misc'],
@@ -636,6 +637,21 @@ function cmdDecision() {
   info(`  建议 commit:discuss(decision): ${id} Owner 拍板 [skip-review]`);
 }
 
+// ---------- proposals(实战沉淀:列出硬升级候选,Owner 一句话逐条采纳) ----------
+function cmdProposals() {
+  const { root, bus } = loadCtx();
+  const p = path.join(bus, 'escalation_candidates.md');
+  if (!fs.existsSync(p)) die('未找到 _collab/escalation_candidates.md(旧版 init 未建,可从 kit templates/ 拷一份)');
+  const lines = fs.readFileSync(p, 'utf8').split(/\r?\n/).filter((l) => /^ESCALATION-CANDIDATE:/.test(l.trim()));
+  if (!lines.length) return ok('当前无待处理候选。协作中 AI 发现"该问 Owner 却无规则可依"时会往该文件追加候选。');
+  console.log('─'.repeat(52));
+  console.log(`硬升级候选(${lines.length} 条,实战沉淀)——请逐条拍板采纳/驳回:`);
+  lines.forEach((l, i) => console.log(`  ${i + 1}. ${l.trim().replace(/^ESCALATION-CANDIDATE:\s*/, '')}`));
+  console.log('─'.repeat(52));
+  info('采纳:由 Owner 把选中条目写进 _collab/escalation_rules.md"项目自定义追加"段,');
+  info('前缀 owner(config): 采纳硬升级候选 [skip-review] 提交;同一 commit 从候选文件删除已处理条目。');
+}
+
 // ---------- install-hook ----------
 function cmdInstallHook() {
   const { root } = loadCtx();
@@ -659,7 +675,7 @@ node "${scriptRel}" check --commit-msg "$1" || exit 1
 }
 
 // ---------- 入口 ----------
-const commands = { init: cmdInit, status: cmdStatus, mode: cmdMode, topic: cmdTopic, advance: cmdAdvance, next: cmdNext, decision: cmdDecision, check: cmdCheck, archive: cmdArchive, 'install-hook': cmdInstallHook };
+const commands = { init: cmdInit, status: cmdStatus, mode: cmdMode, topic: cmdTopic, advance: cmdAdvance, next: cmdNext, decision: cmdDecision, proposals: cmdProposals, check: cmdCheck, archive: cmdArchive, 'install-hook': cmdInstallHook };
 if (!cmd || !commands[cmd]) {
   console.log(`ai-collab-kit 中控脚本
 用法:node collab.mjs <命令>
@@ -670,6 +686,7 @@ if (!cmd || !commands[cmd]) {
   advance         议事环推进(检查产物齐否 + 机械收敛判定)[--commit]
   next            输出下一步该贴给哪个窗口的指令(Owner 纯复制转达)
   decision        Owner 拍板机械誊录 + 议题收口 --from <原文文件> [--status ...]
+  proposals       列出实战沉淀的硬升级候选(Owner 逐条采纳/驳回)
   check           健康检查 [--commit-msg <文件>](hook 用)
   archive         归档 review/state.json 非活跃字段
   install-hook    安装 commit-msg 写权限机检 hook`);

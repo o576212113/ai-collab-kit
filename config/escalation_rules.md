@@ -60,3 +60,11 @@
 - **拿不准算不算命中 → 按命中处理**(宁可多问一次 Owner,不可替 Owner 拍一次板)
 - 实现"Owner 已拍板"的决策不算命中(那是执行不是决策)——但交审时必须带"Owner 已拍板"横幅,见 `loops/lean-code-mode.md` §五
 - **本文件与 `collab.config.json` 由 Owner 亲自维护**:提交时用前缀 `owner(config): ... [skip-review]`(机检只放行此前缀触碰这两个文件);AI 使用此前缀即越权,会在 git log 里显形
+
+---
+
+## 实战沉淀机制(清单从默认五类起步,越用越准)
+
+刚起步不必强求填满——默认五类已兜住大盘。协作中任何角色发现"这事本该停下问 Owner,但清单没写" → 追加候选到 `_collab/escalation_candidates.md`(**不得直接改本文件**:被清单约束的一方不能自己改清单,这是防共谋底线)。
+
+Owner 定期跑 `node <kit>/scripts/collab.mjs proposals` 查看候选,一句话逐条采纳/驳回;采纳条目由 Owner 用 `owner(config):` 前缀写进上面"项目自定义追加"段,并从候选文件删除。

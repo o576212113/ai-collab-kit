@@ -42,6 +42,7 @@
 8. **代码单元随 commit 交 dev-log**(6 段,[../templates/dev_log.md](../templates/dev_log.md));引用代码位置锚实现行不锚注释
 9. **rebase 后重取自己 commit 的 hash** 再写进任何引用(铁律 #18)
 10. **禁止 `git reset --hard`** 等破坏性恢复(共享仓库);ff 失败按漏 push 自检恢复后重试
+11. **红线缺口沉淀**:拿不准是否命中硬升级 → 按命中处理(先停);发现清单未覆盖的项目红线 → 追加候选到 `_collab/escalation_candidates.md`,不得直接改 escalation_rules.md
 
 ## commit 前缀(详见 PROTOCOL §九)
 
