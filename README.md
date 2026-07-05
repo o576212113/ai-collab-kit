@@ -81,7 +81,7 @@ ai-collab-kit/
 ## 五、快速开始
 
 **最快路径(拷一次 + 每窗口一句话)**:
-1. 把 ai-collab-kit/ 整个目录放进项目根
+1. 把 ai-collab-kit/ 整个目录放进项目根(ZIP 下载解压出的 `ai-collab-kit-main` 记得重命名为 `ai-collab-kit`)
 2. 对每个 AI 窗口说**首启句**:"你是开发员(/审核员/中控),按 ai-collab-kit/START.md 自举开工,然后帮我做 XX"
    ——AI 会按自己的情况完成全部部署([START.md](START.md):git init 会请示你、初始化总线、装机检、**把协议接进它自己的指令文件**)
 3. 首启完成后,以后每次会话只需四个字:"你是开发员"

@@ -5,7 +5,10 @@
 
 ## 自举步骤
 
-0. **认识你自己**:确认 ①你是哪个 AI 工具;②你每次会话**自动读取**的项目级指令文件是哪个(Codex → `AGENTS.md`;Claude Code → `CLAUDE.md`;Antigravity/其他 → 你自己的规则文件——你比任何人清楚)。
+0. **认识你自己 + 环境**:
+   - 确认 ①你是哪个 AI 工具;②你每次会话**自动读取**的项目级指令文件是哪个(Codex → `AGENTS.md`;Claude Code → `CLAUDE.md`;Antigravity/其他 → 你自己的规则文件——你比任何人清楚)
+   - **目录名核查**:套件目录若不叫 `ai-collab-kit`(ZIP 下载解压常见 `ai-collab-kit-main`)→ 请示 Owner 后重命名为 `ai-collab-kit`(协议内所有路径引用以此为准)
+   - **多窗口仲裁**:若 `_collab/` 不存在而 Owner 可能同时对多个窗口下发了首启句 → 部署只能由**一个**窗口执行。问 Owner"由我来完成部署吗?";Owner 未点名你 → 等总线就绪后再继续(那时你只需做第 3 步接入自己 + 第 6 步上岗)。
 
 1. **git 仓库**:若当前项目还不是 git 仓库 → 先问 Owner 是否就地初始化;确认后 `git init -b main` + 起草 `.gitignore`(排除依赖/构建产物/大体积媒体与数据/临时文件,清单先给 Owner 确认)+ 现有文件快照 `git commit -m "chore: 初始项目快照"`。
 
