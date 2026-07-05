@@ -80,10 +80,13 @@ ai-collab-kit/
 
 ## 五、快速开始
 
-**最快路径(新项目,拷两下 + 一句话)**:
+**最快路径(拷一次 + 每窗口一句话)**:
 1. 把 ai-collab-kit/ 整个目录放进项目根
-2. 把 [bootstrap/](bootstrap/) 下的 AGENTS.md 和 CLAUDE.md 拷到项目根(已有同名文件则把内容**追加**进去,别覆盖)
-3. 对每个 AI 窗口说一句"你是开发员 / 你是审核员"——第一个被指派并派活的 AI 会**自举完成其余一切**(init 总线、bootstrap commit、装 hook、进 lean 模式;git init 会先请示你)
+2. 对每个 AI 窗口说**首启句**:"你是开发员(/审核员/中控),按 ai-collab-kit/START.md 自举开工,然后帮我做 XX"
+   ——AI 会按自己的情况完成全部部署([START.md](START.md):git init 会请示你、初始化总线、装机检、**把协议接进它自己的指令文件**)
+3. 首启完成后,以后每次会话只需四个字:"你是开发员"
+
+(不放心让 AI 自己接线的,也可手工把 [bootstrap/](bootstrap/) 下两个文件拷到项目根——效果等价)
 
 配置两件套(config + 硬升级清单)可后补:清单从默认五类起步,协作中 AI 把发现的红线缺口记为候选(escalation_candidates 机制),你跑 `collab.mjs proposals` 一句话逐条采纳——越用越准。
 
